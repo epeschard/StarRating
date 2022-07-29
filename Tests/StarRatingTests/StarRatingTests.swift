@@ -64,4 +64,17 @@ class StarRatingTests: XCTestCase {
             XCTAssertEqual(error, StarRatingError.maxStarsLowerThanMinStars)
         }
     }
+
+    func test_givenDefault_whenRate_thenRatingUpdates() throws {
+        // Given
+        let rating: Float = 4.2
+
+        sut = try! StarRating()
+
+        // When
+        sut.value = rating
+
+        // Then
+        XCTAssertEqual(sut.value, rating)
+    }
 }

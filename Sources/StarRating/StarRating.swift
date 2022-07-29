@@ -8,6 +8,7 @@ public final class StarRating: UIView {
             updateRating(value)
         }
     }
+    public var delegate: StarRatingDelegate?
 
     private(set) var minStars: Int
     private(set) var maxStars: Int
@@ -99,6 +100,7 @@ private extension StarRating {
     }
 
     func updateRating(_ value: Float) {
+        delegate?.didUpdate(rating: value)
         for (index, view) in stackView.arrangedSubviews.enumerated() {
             guard
                 let star = view as? UIImageView

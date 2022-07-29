@@ -2,6 +2,13 @@ import UIKit
 
 /// An object that displays a StarRating UI component in your interface.
 public final class StarRating: UIView {
+    /// Rating score value for Star Rating UI component
+    public var value: Float = 0.0 {
+        didSet {
+            updateRating(value)
+        }
+    }
+
     private(set) var minStars: Int
     private(set) var maxStars: Int
 
@@ -47,10 +54,17 @@ public final class StarRating: UIView {
 private extension StarRating {
     func setup() {
         self.addSubview(self.stackView)
-        for _ in minStars...maxStars {
+        for rating in minStars...maxStars {
             let star = UIImageView(
                 image: UIImage(systemName: ID.Image.star)
             )
+            let tap = StarRatingTap(
+                target: self,
+                action: #selector(didTapStar(sender:))
+            )
+            tap.rating = rating
+            star.addGestureRecognizer(tap)
+            star.isUserInteractionEnabled = true
             stackView.addArrangedSubview(star)
         }
     }
@@ -82,5 +96,25 @@ private extension StarRating {
                 constant: insets.left
             ),
         ])
+    }
+
+    func updateRating(_ value: Float) {
+        for (index, view) in stackView.arrangedSubviews.enumerated() {
+            guard
+                let star = view as? UIImageView
+            else {
+                return
+            }
+            if index < Int(value) {
+                star.image = UIImage(systemName: ID.Image.filledStar)
+            } else {
+                star.image = UIImage(systemName: ID.Image.star)
+            }
+        }
+    }
+
+    @objc
+    func didTapStar(sender: StarRatingTap) {
+        value = Float(sender.rating)
     }
 }

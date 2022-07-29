@@ -31,7 +31,7 @@ public final class StarRating: UIView {
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(ID.Coder.fatalError)
     }
 
     private let stackView: UIStackView = {
@@ -49,7 +49,7 @@ private extension StarRating {
         self.addSubview(self.stackView)
         for _ in minStars...maxStars {
             let star = UIImageView(
-                image: UIImage(systemName: "star")
+                image: UIImage(systemName: ID.Image.star)
             )
             stackView.addArrangedSubview(star)
         }

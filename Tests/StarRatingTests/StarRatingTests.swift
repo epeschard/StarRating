@@ -10,7 +10,7 @@ class StarRatingTests: XCTestCase {
         let starCount = 9
 
         // When
-        sut = StarRating(
+        sut = try! StarRating(
             maxStars: starCount
         )
 
@@ -18,4 +18,50 @@ class StarRatingTests: XCTestCase {
         XCTAssertEqual(sut.maxStars, starCount)
     }
 
+    func test_givenNegativeMinStars_whenInit_ThenError() throws {
+        // Given
+        let minStars = -6
+
+        do {
+            // When
+            _ = try StarRating(
+                minStars: minStars
+            )
+        } catch let error as StarRatingError {
+            // Then
+            XCTAssertEqual(error, StarRatingError.negativeMinStars)
+        }
+    }
+
+    func test_givenNegativeMaxStars_whenInit_ThenError() throws {
+        // Given
+        let maxStars = -3
+
+        do {
+            // When
+            _ = try StarRating(
+                maxStars: maxStars
+            )
+        } catch let error as StarRatingError {
+            // Then
+            XCTAssertEqual(error, StarRatingError.negativeMaxStars)
+        }
+    }
+
+    func test_givenSmallerMaxStars_whenInit_ThenError() throws {
+        // Given
+        let minStars = 9
+        let maxStars = 6
+
+        do {
+            // When
+            _ = try StarRating(
+                minStars: minStars,
+                maxStars: maxStars
+            )
+        } catch let error as StarRatingError {
+            // Then
+            XCTAssertEqual(error, StarRatingError.maxStarsLowerThanMinStars)
+        }
+    }
 }

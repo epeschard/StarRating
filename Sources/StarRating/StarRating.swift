@@ -9,7 +9,17 @@ public final class StarRating: UIView {
         minStars: Int = 1,
         maxStars: Int = 5,
         insets: UIEdgeInsets = .zero
-    ) {
+    ) throws {
+        guard minStars >= 0 else {
+            throw StarRatingError.negativeMinStars
+        }
+        guard maxStars > 0 else {
+            throw StarRatingError.negativeMaxStars
+        }
+        guard  maxStars > minStars else {
+            throw StarRatingError.maxStarsLowerThanMinStars
+        }
+
         self.minStars = minStars
         self.maxStars = maxStars
 

@@ -5,13 +5,20 @@ public final class StarRating: UIView {
     /// Rating score value for Star Rating UI component
     public var value: Float = 0.0 {
         didSet {
+            guard oldValue == value else { return }
+
+            if oldValue < value {
+                delegate?.adjustableDecrementFor(self)
+            } else if oldValue > value {
+                delegate?.adjustableIncrementFor(self)
+            }
             updateRating(value)
         }
     }
-    public var delegate: StarRatingDelegate?
+    public weak var delegate: AdjustableForAccessibilityDelegate?
 
     private(set) var minStars: Int
-    private(set) var maxStars: Int
+    private(set) public var maxStars: Int
 
     public init(
         minStars: Int = 1,
@@ -33,7 +40,7 @@ public final class StarRating: UIView {
 
         super.init(frame: .zero)
 
-        setup()
+        commonSetup()
         layout(with: insets)
     }
 
@@ -53,7 +60,20 @@ public final class StarRating: UIView {
 // MARK: - Private
 
 private extension StarRating {
-    func setup() {
+    func commonSetup() {
+        setupStarRating()
+        setupAccessibility()
+    }
+
+    func setupAccessibility() {
+        isAccessibilityElement = true
+        accessibilityTraits = .adjustable
+        accessibilityValue = "\(value) stars out of \(maxStars)"
+        accessibilityHint = ID.A11y.hint
+        accessibilityLabel = ID.A11y.label
+    }
+
+    func setupStarRating() {
         self.addSubview(self.stackView)
         for rating in minStars...maxStars {
             let star = UIImageView(
@@ -100,19 +120,18 @@ private extension StarRating {
     }
 
     func updateRating(_ value: Float) {
-        delegate?.didUpdate(rating: value)
         for (index, view) in stackView.arrangedSubviews.enumerated() {
             guard
                 let star = view as? UIImageView
-            else {
-                return
-            }
+            else { return }
+
             if index < Int(value) {
                 star.image = UIImage(systemName: ID.Image.filledStar)
             } else {
                 star.image = UIImage(systemName: ID.Image.star)
             }
         }
+        self.accessibilityValue = "\(value) stars out of \(maxStars)"
     }
 
     @objc

@@ -1,10 +1,16 @@
 import Foundation
 @testable import StarRating
 
-class MockStarRatingDelegate: StarRatingDelegate {
-    var updateWasCalled: Bool = false
+class MockStarRatingDelegate: AdjustableForAccessibilityDelegate {
 
-    func didUpdate(rating: Float) {
-        updateWasCalled = true
+    var adjustableDecrementWasCalled: Bool = false
+    var adjustableIncrementWasCalled: Bool = false
+
+    func adjustableDecrementFor(_ view: StarRating) {
+        adjustableDecrementWasCalled = true
+    }
+
+    func adjustableIncrementFor(_ view: StarRating) {
+        adjustableIncrementWasCalled = true
     }
 }

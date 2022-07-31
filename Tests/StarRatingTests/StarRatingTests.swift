@@ -77,4 +77,34 @@ class StarRatingTests: XCTestCase {
         // Then
         XCTAssertEqual(sut.value, rating)
     }
+
+    func test_givenDefault_whenRateIncrease_thenDelegateNotifies() throws {
+        // Given
+        let rating: Float = 4.0
+
+        sut = try! StarRating()
+        let delegate = MockStarRatingDelegate()
+        sut.delegate = delegate
+
+        // When
+        sut.value = rating
+
+        // Then
+        XCTAssertTrue(delegate.adjustableIncrementWasCalled)
+    }
+
+    func test_givenDefault_whenRateDecrease_thenDelegateNotifies() throws {
+        // Given
+        let rating: Float = 4.0
+
+        sut = try! StarRating()
+        let delegate = MockStarRatingDelegate()
+        sut.delegate = delegate
+
+        // When
+        sut.value = rating
+
+        // Then
+        XCTAssertTrue(delegate.adjustableIncrementWasCalled)
+    }
 }

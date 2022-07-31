@@ -1,6 +1,7 @@
 import XCTest
 @testable import StarRating
 
+@MainActor
 class StarRatingTests: XCTestCase {
 
     var sut: StarRating!

@@ -16,10 +16,12 @@ extension StarRating {
         set { }
     }
 
+    @MainActor
     public override func accessibilityIncrement() {
         delegate?.adjustableIncrementFor(self)
     }
 
+    @MainActor
     public override func accessibilityDecrement() {
         delegate?.adjustableDecrementFor(self)
     }

@@ -1,6 +1,7 @@
 import UIKit
 
 /// An object that displays a StarRating UI component in your interface.
+@MainActor
 public final class StarRating: UIView {
     /// Rating score value for Star Rating UI component
     public var value: Float = 0.0 {

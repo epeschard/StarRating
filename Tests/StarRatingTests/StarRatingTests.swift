@@ -100,11 +100,12 @@ class StarRatingTests: XCTestCase {
         sut = try! StarRating()
         let delegate = MockStarRatingDelegate()
         sut.delegate = delegate
+        sut.value = 5.0
 
         // When
         sut.value = rating
 
         // Then
-        XCTAssertTrue(delegate.adjustableIncrementWasCalled)
+        XCTAssertTrue(delegate.adjustableDecrementWasCalled)
     }
 }

@@ -5,11 +5,13 @@ public final class StarRating: UIView {
     /// Rating score value for Star Rating UI component
     public var value: Float = 0.0 {
         didSet {
-            guard oldValue == value else { return }
+            guard
+                oldValue != value
+            else { return }
 
-            if oldValue < value {
+            if value < oldValue {
                 delegate?.adjustableDecrementFor(self)
-            } else if oldValue > value {
+            } else if value > oldValue {
                 delegate?.adjustableIncrementFor(self)
             }
             updateRating(value)
